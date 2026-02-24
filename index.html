@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Number</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
+
+.container{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:350px;
+    box-shadow:0 0 30px rgba(0,255,255,0.3);
+    transition:0.3s;
+}
+
+h1{
+    margin-bottom:20px;
+    font-size:28px;
+    color:#00f5ff;
+}
+
+input{
+    width:80%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    margin:15px 0;
+    text-align:center;
+    font-size:18px;
+    outline:none;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:25px;
+    background:#00f5ff;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#a100ff;
+    color:white;
+    box-shadow:0 0 15px #a100ff;
+}
+
+.message{
+    margin-top:15px;
+    font-size:18px;
+    min-height:24px;
+}
+
+.info{
+    margin-top:10px;
+    font-size:14px;
+    opacity:0.8;
+}
+
+.win{
+    box-shadow:0 0 40px #32ff7e !important;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="gameBox">
+    <h1>Secret Number</h1>
+    <p>Guess a number between 1 and 100</p>
+
+    <input type="number" id="guessInput" placeholder="Enter number">
+    <br>
+    <button onclick="checkGuess()">Guess</button>
+
+    <div class="message" id="message"></div>
+    <div class="info">
+        Attempts left: <span id="attempts">10</span>
+    </div>
+</div>
+
+<script>
+let secretNumber = Math.floor(Math.random() * 100) + 1;
+let attempts = 10;
+
+function checkGuess(){
+    const input = document.getElementById("guessInput");
+    const message = document.getElementById("message");
+    const attemptsDisplay = document.getElementById("attempts");
+    const gameBox = document.getElementById("gameBox");
+
+    let userGuess = Number(input.value);
+
+    if(!userGuess){
+        message.textContent = "Enter a valid number!";
+        return;
+    }
+
+    attempts--;
+    attemptsDisplay.textContent = attempts;
+
+    if(userGuess === secretNumber){
+        message.textContent = "🎉 Correct! You found the Secret Number!";
+        message.style.color = "#32ff7e";
+        gameBox.classList.add("win");
+        input.disabled = true;
+    }
+    else if(attempts === 0){
+        message.textContent = "💀 Game Over! The number was " + secretNumber;
+        message.style.color = "red";
+        input.disabled = true;
+    }
+    else if(userGuess > secretNumber){
+        message.textContent = "📈 Too High!";
+        message.style.color = "#00f5ff";
+    }
+    else{
+        message.textContent = "📉 Too Low!";
+        message.style.color = "#00f5ff";
+    }
+
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
