@@ -1,370 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess My Number</title>
-    
-    <!-- Google Fonts: English (Poppins) & Arabic (Cairo) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Number</title>
 
-    <style>
-        /* --- CSS Variables & Reset --- */
-        :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --accent-color: #6c5ce7;
-            --accent-hover: #5b4cc4;
-            --success-color: #00b894;
-            --error-color: #ff7675;
-            --border-radius: 16px;
-            --transition: all 0.3s ease;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: var(--transition);
-        }
+.container{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:350px;
+    box-shadow:0 0 30px rgba(0,255,255,0.3);
+    transition:0.3s;
+}
 
-        /* --- Main Container --- */
-        .container {
-            background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            position: relative;
-            border: 1px solid #333;
-        }
+h1{
+    margin-bottom:20px;
+    font-size:28px;
+    color:#00f5ff;
+}
 
-        /* --- Header & Language Toggle --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
+input{
+    width:80%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    margin:15px 0;
+    text-align:center;
+    font-size:18px;
+    outline:none;
+}
 
-        .lang-btn {
-            background: transparent;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 5px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
-            transition: var(--transition);
-        }
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:25px;
+    background:#00f5ff;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
 
-        .lang-btn:hover {
-            background: var(--accent-color);
-            color: white;
-        }
+button:hover{
+    background:#a100ff;
+    color:white;
+    box-shadow:0 0 15px #a100ff;
+}
 
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
+.message{
+    margin-top:15px;
+    font-size:18px;
+    min-height:24px;
+}
 
-        .instruction {
-            font-size: 0.9rem;
-            color: #aaa;
-            margin-bottom: 1.5rem;
-        }
+.info{
+    margin-top:10px;
+    font-size:14px;
+    opacity:0.8;
+}
 
-        /* --- Game Area --- */
-        .number-display {
-            font-size: 4rem;
-            font-weight: 800;
-            color: var(--accent-color);
-            margin: 1rem 0;
-            min-height: 80px;
-            user-select: none;
-        }
+.win{
+    box-shadow:0 0 40px #32ff7e !important;
+}
 
-        .message {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            min-height: 1.5em;
-            font-weight: 600;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 2rem;
-        }
-
-        input[type="number"] {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #333;
-            background: #2d2d2d;
-            color: white;
-            font-size: 1.2rem;
-            text-align: center;
-            outline: none;
-            font-family: inherit;
-        }
-
-        input[type="number"]:focus {
-            border-color: var(--accent-color);
-        }
-
-        /* Hide number spinners */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .check-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .check-btn:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .check-btn:disabled {
-            background-color: #444;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* --- Stats Section --- */
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #333;
-            padding-top: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-box {
-            text-align: center;
-        }
-
-        .stat-label {
-            display: block;
-            font-size: 0.8rem;
-            color: #aaa;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        /* --- Reset Button --- */
-        .reset-btn {
-            background-color: transparent;
-            color: #aaa;
-            border: none;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .reset-btn:hover {
-            color: white;
-        }
-
-        /* --- RTL Support --- */
-        body[dir="rtl"] {
-            font-family: 'Cairo', sans-serif;
-        }
-        
-        body[dir="rtl"] .input-group {
-            flex-direction: row-reverse;
-        }
-
-        /* --- Utility Classes for Feedback --- */
-        .text-success { color: var(--success-color); }
-        .text-error { color: var(--error-color); }
-
-    </style>
+</style>
 </head>
+
 <body>
 
-    <div class="container" id="game-container">
-        <header>
-            <h1 data-i18n="title">Guess My Number</h1>
-            <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">العربية</button>
-        </header>
+<div class="container" id="gameBox">
+    <h1>Secret Number</h1>
+    <p>Guess a number between 1 and 100</p>
 
-        <p class="instruction" data-i18n="instruction">Between 1 and 100</p>
+    <input type="number" id="guessInput" placeholder="Enter number">
+    <br>
+    <button onclick="checkGuess()">Guess</button>
 
-        <div class="number-display" id="number-display">?</div>
-        <div class="message" id="message" data-i18n="start">Start guessing...</div>
-
-        <div class="input-group">
-            <input type="number" id="guess-input" placeholder="?" min="1" max="100">
-            <button class="check-btn" id="check-btn" data-i18n="check">Check</button>
-        </div>
-
-        <div class="stats">
-            <div class="stat-box">
-                <span class="stat-label" data-i18n="attempts">Attempts</span>
-                <span class="stat-value" id="attempts">0</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label" data-i18n="highscore">High Score</span>
-                <span class="stat-value" id="highscore">0</span>
-            </div>
-        </div>
-
-        <button class="reset-btn" id="reset-btn" onclick="initGame()" data-i18n="reset">Play Again</button>
+    <div class="message" id="message"></div>
+    <div class="info">
+        Attempts left: <span id="attempts">10</span>
     </div>
+</div>
 
-    <script>
-        // --- Game State ---
-        let secretNumber;
-        let attempts;
-        let highScore;
-        let isGameActive;
-        let currentLang = 'en';
+<script>
+let secretNumber = Math.floor(Math.random() * 100) + 1;
+let attempts = 10;
 
-        // --- DOM Elements ---
-        const numberDisplay = document.getElementById('number-display');
-        const messageEl = document.getElementById('message');
-        const inputEl = document.getElementById('guess-input');
-        const checkBtn = document.getElementById('check-btn');
-        const attemptsEl = document.getElementById('attempts');
-        const highScoreEl = document.getElementById('highscore');
-        const langBtn = document.getElementById('lang-toggle');
-        const body = document.body;
+function checkGuess(){
+    const input = document.getElementById("guessInput");
+    const message = document.getElementById("message");
+    const attemptsDisplay = document.getElementById("attempts");
+    const gameBox = document.getElementById("gameBox");
 
-        // --- Translations Dictionary ---
-        const translations = {
-            en: {
-                title: "Guess My Number",
-                instruction: "Between 1 and 100",
-                start: "Start guessing...",
-                check: "Check",
-                attempts: "Attempts",
-                highscore: "High Score",
-                reset: "Play Again",
-                tooHigh: "📈 Too High!",
-                tooLow: "📉 Too Low!",
-                correct: "🎉 Correct!",
-                winMsg: "You won! Great job.",
-                placeholder: "?"
-            },
-            ar: {
-                title: "خمن رقمي",
-                instruction: "بين 1 و 100",
-                start: "ابدأ التخمين...",
-                check: "تحقق",
-                attempts: "المحاولات",
-                highscore: "أعلى نتيجة",
-                reset: "العب مجدداً",
-                tooHigh: "📈 مرتفع جداً!",
-                tooLow: "📉 منخفض جداً!",
-                correct: "🎉 إجابة صحيحة!",
-                winMsg: "لقد ربحت! عمل رائع.",
-                placeholder: "؟"
-            }
-        };
+    let userGuess = Number(input.value);
 
-        // --- Initialization ---
-        function initGame() {
-            secretNumber = Math.trunc(Math.random() * 100) + 1;
-            attempts = 0;
-            isGameActive = true;
-            
-            // UI Resets
-            numberDisplay.textContent = "?";
-            messageEl.textContent = getText('start');
-            messageEl.className = "message"; // Remove color classes
-            inputEl.value = "";
-            inputEl.disabled = false;
-            checkBtn.disabled = false;
-            inputEl.focus();
-            
-            updateStats();
-        }
+    if(!userGuess){
+        message.textContent = "Enter a valid number!";
+        return;
+    }
 
-        // --- Core Logic ---
-        function checkGuess() {
-            if (!isGameActive) return;
+    attempts--;
+    attemptsDisplay.textContent = attempts;
 
-            const userGuess = Number(inputEl.value);
+    if(userGuess === secretNumber){
+        message.textContent = "🎉 Correct! You found the Secret Number!";
+        message.style.color = "#32ff7e";
+        gameBox.classList.add("win");
+        input.disabled = true;
+    }
+    else if(attempts === 0){
+        message.textContent = "💀 Game Over! The number was " + secretNumber;
+        message.style.color = "red";
+        input.disabled = true;
+    }
+    else if(userGuess > secretNumber){
+        message.textContent = "📈 Too High!";
+        message.style.color = "#00f5ff";
+    }
+    else{
+        message.textContent = "📉 Too Low!";
+        message.style.color = "#00f5ff";
+    }
 
-            if (!userGuess || userGuess < 1 || userGuess > 100) {
-                messageEl.textContent = getText('instruction'); // Reuse instruction text or add specific error
-                return;
-            }
+    input.value = "";
+}
+</script>
 
-            attempts++;
-            updateStats();
-
-            if (userGuess === secretNumber) {
-                handleWin();
-            } else if (userGuess > secretNumber) {
-                messageEl.textContent = getText('tooHigh');
-                messageEl.className = "message text-error";
-            } else {
-                messageEl.textContent = getText('tooLow');
-                messageEl.className = "message text-error";
-            }
-            
-            inputEl.value = "";
-            inputEl.focus();
-        }
-
-        function handleWin() {
-            isGameActive = false;
-            messageEl.textContent = getText('correct') + " " + getText('winMsg');
-            messageEl.className = "message text-success";
-            numberDisplay.textContent = secretNumber;
-            inputEl.disabled = true;
-            checkBtn.disabled = true;
-
-            if (attempts < highScore || highScore === 0) {
-                highScore = attempts;
-                updateStats();
-            }
-        }
-
-        function updateStats() {
-            attemptsEl.textContent = attempts;
-            highScoreEl.textContent = highScore;
-        }
-
-        // --- Language & Localization ---
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            
-            // Update Text
-            document.querySelectorAll('[data-i18
+</body>
+</html>
